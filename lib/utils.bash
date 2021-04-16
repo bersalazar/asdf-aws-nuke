@@ -29,8 +29,6 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if aws-nuke has other means of determining installable versions.
   list_github_tags
 }
 
@@ -39,6 +37,22 @@ is_prerelease() {
     return 0
   fi
   return 1
+}
+
+is_supported() {
+  # Validates the minimum version is 2.15. Previous versions are not supported by this plugin.
+
+  local required_version_major=2
+  local required_version_minor=15
+  local proposed_version_major=$(echo $version | cut -c1)
+  local proposed_version_minor=$(echo $version | cut -d'.' -f 2)
+
+  if [[ "${proposed_version_major}" -lt "${required_version_major}" ]]; then
+    return 1
+  elif [[ "${proposed_version_major}" -eq "${required_version_major}" ]] && [[ "${proposed_version_minor}" -lt "${required_version_minor}" ]]; then
+    return 1
+  fi
+  return 0
 }
 
 platform="$(uname -s | awk '{print tolower($0)}')"
@@ -64,11 +78,14 @@ install_version() {
   local install_type="$1"
   local version="$2"
   local install_path="$3"
-  local extra_args="--strip-components=1"
   local formatted=$version
 
+  if ! is_supported; then
+    echo "This version is not supported. Supported versions: 2.15.x or above."
+    exit 1
+  fi
+
   if is_prerelease; then
-    extra_args=""
     formatted=${version//[-]/.}
   fi
 
@@ -78,13 +95,9 @@ install_version() {
 
   local release_file="$install_path/aws-nuke-v${formatted}-${platform}-$ARCH.tar.gz"
   (
-    if is_prerelease; then
-      extra_args=""
-    fi
-
     mkdir -p "$install_path/bin"
     download_release "$version" "$release_file"
-    tar -xzf "$release_file" -C "$install_path/bin" $extra_args || fail "Could not extract $release_file"
+    tar -xzf "$release_file" -C "$install_path/bin" || fail "Could not extract $release_file"
     mv "$install_path/bin/aws-nuke-v${formatted}-${platform}-$ARCH" "$install_path/bin/aws-nuke"
     chmod +x "$install_path/bin/aws-nuke" || fail "Could not set executable bit on binary"
     rm "$release_file"
