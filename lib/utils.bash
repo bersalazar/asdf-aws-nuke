@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-GH_REPO="https://github.com/rebuy-de/aws-nuke"
+GH_REPO="https://github.com/ekristen/aws-nuke"
 ARCH="amd64"
 
 fail() {
