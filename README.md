@@ -2,17 +2,23 @@
 
 # asdf-aws-nuke ![Build](https://github.com/bersalazar/asdf-aws-nuke/workflows/Build/badge.svg) ![Lint](https://github.com/bersalazar/asdf-aws-nuke/workflows/Lint/badge.svg)
 
-[aws-nuke](https://github.com/rebuy-de/aws-nuke) plugin for the [asdf version manager](https://asdf-vm.com).
+[aws-nuke](https://github.com/ekristen/aws-nuke) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
 # Contents
 
+- [History](#history)
 - [Dependencies](#dependencies)
 - [Install](#install)
 - [Why?](#why)
 - [Contributing](#contributing)
 - [License](#license)
+
+# History
+
+The `ekristen` fork of aws-nuke is based on the [original](https://github.com/rebuy-de/aws-nuke). `rebuy-de` have offically deprecated their repo and indicate `ekristen` is
+the preferred fork as evidenced in their [README.md](https://github.com/rebuy-de/aws-nuke/blob/main/README.md)
 
 # Dependencies
 
