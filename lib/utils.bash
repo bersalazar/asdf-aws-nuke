@@ -98,7 +98,6 @@ install_version() {
     mkdir -p "$install_path/bin"
     download_release "$version" "$release_file"
     tar -xzf "$release_file" -C "$install_path/bin" || fail "Could not extract $release_file"
-    mv "$install_path/bin/aws-nuke-v${formatted}-${platform}-$ARCH" "$install_path/bin/aws-nuke"
     chmod +x "$install_path/bin/aws-nuke" || fail "Could not set executable bit on binary"
     rm "$release_file"
 
